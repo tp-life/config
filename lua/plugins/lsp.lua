@@ -1,6 +1,7 @@
 return {
   "VonHeikemen/lsp-zero.nvim",
   branch = "v2.x",
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     -- LSP Support
     { "neovim/nvim-lspconfig" }, -- Required
@@ -47,8 +48,6 @@ return {
         "tsserver",
         "eslint",
         "rust_analyzer",
-        "kotlin_language_server",
-        "jdtls",
         "lua_ls",
         "jsonls",
         "html",
@@ -59,9 +58,7 @@ return {
         "dockerls",
         "bashls",
         "marksman",
-        "cucumber_language_server",
         "gopls",
-        "astro",
       },
       handlers = {
         lsp.default_setup,
@@ -125,4 +122,5 @@ return {
       }),
     })
   end,
+  
 }

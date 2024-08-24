@@ -49,7 +49,6 @@ return {
     },
     config = true,
   },
-  { "mfussenegger/nvim-jdtls" },
   {
     "stevearc/oil.nvim",
     opts = {},
@@ -202,79 +201,8 @@ return {
     end,
     ft = { "markdown" },
   },
-  {
-    "mfussenegger/nvim-lint",
-    event = {
-      "BufReadPre",
-      "BufNewFile",
-    },
-    config = function()
-      local lint = require("lint")
-
-      lint.linters_by_ft = {
-        javascript = { "eslint_d" },
-        typescript = { "eslint_d" },
-        javascriptreact = { "eslint_d" },
-        typescriptreact = { "eslint_d" },
-        svelte = { "eslint_d" },
-      }
-
-      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-        group = lint_augroup,
-        callback = function()
-          lint.try_lint()
-        end,
-      })
-
-      vim.keymap.set("n", "<leader>ll", function()
-        lint.try_lint()
-      end, { desc = "Trigger linting for current file" })
-    end,
-  },
-  {
-    "stevearc/conform.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local conform = require("conform")
-
-      conform.setup({
-        formatters_by_ft = {
-          lua = { "stylua" },
-          svelte = { { "prettierd", "prettier", stop_after_first = true } },
-          astro = { { "prettierd", "prettier", stop_after_first = true } },
-          javascript = { { "prettierd", "prettier", stop_after_first = true } },
-          typescript = { { "prettierd", "prettier", stop_after_first = true } },
-          javascriptreact = { { "prettierd", "prettier", stop_after_first = true } },
-          typescriptreact = { { "prettierd", "prettier", stop_after_first = true } },
-          json = { { "prettierd", "prettier", stop_after_first = true } },
-          graphql = { { "prettierd", "prettier", stop_after_first = true } },
-          java = { "google-java-format" },
-          markdown = { { "prettierd", "prettier", stop_after_first = true } },
-          erb = { "htmlbeautifier" },
-          html = { "htmlbeautifier" },
-          bash = { "beautysh" },
-          proto = { "buf" },
-          rust = { "rustfmt" },
-          yaml = { "yamlfix" },
-          toml = { "taplo" },
-          css = { { "prettierd", "prettier", stop_after_first = true } },
-          scss = { { "prettierd", "prettier", stop_after_first = true } },
-          sh = { "shellcheck" },
-          go = { "gofmt" },
-        },
-      })
-
-      vim.keymap.set({ "n", "v" }, "<leader>l", function()
-        conform.format({
-          lsp_fallback = true,
-          async = false,
-          timeout_ms = 1000,
-        })
-      end, { desc = "Format file or range (in visual mode)" })
-    end,
-  },
+  
+  
   {
     "nvim-treesitter/nvim-treesitter-context",
     config = function()
@@ -313,27 +241,7 @@ return {
       { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
-  {
-    "pwntester/octo.nvim",
-    cmd = "Octo",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("octo").setup({
-        enable_builtin = true,
-        use_local_fs = true,
-      })
-      vim.cmd([[hi OctoEditable guibg=none]])
-      vim.treesitter.language.register("markdown", "octo")
-    end,
-    keys = {
-      { "<leader>O",  "<cmd>Octo<cr>",         desc = "Octo" },
-      { "<leader>Op", "<cmd>Octo pr list<cr>", desc = "Octo pr list" },
-    },
-  },
+
   {
     "windwp/nvim-ts-autotag",
     dependencies = "nvim-treesitter/nvim-treesitter",
@@ -360,7 +268,6 @@ return {
           "query",
           "heex",
           "eex",
-          "java",
           "jq",
           "dockerfile",
           "json",
@@ -370,7 +277,6 @@ return {
           "tsx",
           "bash",
           "markdown",
-          "java",
           "astro",
         },
         sync_install = false,
@@ -473,152 +379,6 @@ return {
       require("nvim-autopairs").setup()
     end,
   },
-  {
-    "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "antoinemadec/FixCursorHold.nvim",
-      "olimorris/neotest-rspec",
-      "haydenmeade/neotest-jest",
-      "zidhuss/neotest-minitest",
-      "mfussenegger/nvim-dap",
-      "jfpedroza/neotest-elixir",
-      "weilbith/neotest-gradle",
-      "nvim-neotest/neotest-go",
-    },
-    opts = {},
-    config = function()
-      local neotest = require("neotest")
-
-      local neotest_jest = require("neotest-jest")({
-        jestCommand = "npm test --",
-      })
-      neotest_jest.filter_dir = function(name)
-        return name ~= "node_modules" and name ~= "__snapshots__"
-      end
-
-      neotest.setup({
-        adapters = {
-          require("neotest-gradle"),
-          require("neotest-rspec")({
-            rspec_cmd = function()
-              return vim.tbl_flatten({
-                "bundle",
-                "exec",
-                "rspec",
-              })
-            end,
-          }),
-          neotest_jest,
-          require("neotest-minitest"),
-          require("neotest-elixir"),
-          require("neotest-go"),
-        },
-        output_panel = {
-          enabled = true,
-          open = "botright split | resize 15",
-        },
-        quickfix = {
-          open = false,
-        },
-      })
-    end,
-  },
-  {
-    "mfussenegger/nvim-dap",
-    "nvim-neotest/nvim-nio",
-    "nvim-lua/plenary.nvim",
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    config = function(_, opts)
-      local dap = require("dap")
-      local dapui = require("dapui")
-      dap.set_log_level('INFO')
-      dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({})
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close({})
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close({})
-      end
-    end,
-    requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-  },
-  {
-    "leoluz/nvim-dap-go",
-    config = function()
-      require("dap-go").setup()
-    end,
-  },
-  {
-    "theHamsta/nvim-dap-virtual-text",
-    opts = {},
-  },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    dependencies = "mason.nvim",
-    cmd = { "DapInstall", "DapUninstall" },
-    opts = {
-      automatic_installation = true,
-      handlers = {},
-      ensure_installed = {
-        "delve"
-      },
-    },
-  },
-  { "jbyuki/one-small-step-for-vimkind", module = "osv" },
-  -- {
-  --   "mfussenegger/nvim-dap",
-  --   dependencies = {
-  --     -- {
-  --     --   "rcarriga/nvim-dap-ui",
-  --     --   "nvim-neotest/nvim-nio",
-  --     --   config = function(_, opts)
-  --     --     local dap = require("dap")
-  --     --     local dapui = require("dapui")
-  --     --     dap.set_log_level('INFO')
-  --     --     dapui.setup(opts)
-  --     --     dap.listeners.after.event_initialized["dapui_config"] = function()
-  --     --       dapui.open({})
-  --     --     end
-  --     --     dap.listeners.before.event_terminated["dapui_config"] = function()
-  --     --       dapui.close({})
-  --     --     end
-  --     --     dap.listeners.before.event_exited["dapui_config"] = function()
-  --     --       dapui.close({})
-  --     --     end
-  --     --   end,
-  --     -- },
-  --     {
-  --       "leoluz/nvim-dap-go",
-  --       config = function()
-  --         require("dap-go").setup()
-  --       end,
-  --     },
-  --     {
-  --       "theHamsta/nvim-dap-virtual-text",
-  --       opts = {},
-  --     },
-  --     {
-  --       "jay-babu/mason-nvim-dap.nvim",
-  --       dependencies = "mason.nvim",
-  --       cmd = { "DapInstall", "DapUninstall" },
-  --       opts = {
-  --         automatic_installation = true,
-  --         handlers = {},
-  --         ensure_installed = {
-  --           "delve"
-  --         },
-  --       },
-  --     },
-  --     { "jbyuki/one-small-step-for-vimkind", module = "osv" },
-  --   },
-  -- },
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -744,48 +504,7 @@ return {
     end,
   },
   "mg979/vim-visual-multi",
-  "tpope/vim-rails",
-  {
-    "williamboman/mason.nvim",
-    dependencies = {
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    config = function()
-      local mason = require("mason")
-      local mason_tool_installer = require("mason-tool-installer")
-
-      -- enable mason and configure icons
-      mason.setup({
-        ui = {
-          icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗",
-          },
-        },
-      })
-
-      mason_tool_installer.setup({
-        ensure_installed = {
-          "prettier",
-          "prettierd",
-          "ktlint",
-          "eslint_d",
-          "google-java-format",
-          "htmlbeautifier",
-          "beautysh",
-          "buf",
-          "rustfmt",
-          "yamlfix",
-          "taplo",
-          "shellcheck",
-          "gopls",
-          "delve",
-          "astro-language-server",
-        },
-      })
-    end,
-  },
+  
   {
     "folke/which-key.nvim",
     event = "VeryLazy",

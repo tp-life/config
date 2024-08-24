@@ -1,6 +1,7 @@
 return {
   "mxsdev/nvim-dap-vscode-js",
   dependencies = { "mfussenegger/nvim-dap" },
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     require("dap-vscode-js").setup({
       debugger_path = "/Users/andrew/vscode-js-debug",

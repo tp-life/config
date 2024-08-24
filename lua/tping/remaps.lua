@@ -108,8 +108,6 @@ end, { desc = "Source current file" })
 -- Dismiss Noice Message
 vim.keymap.set("n", "<leader>nd", "<cmd>NoiceDismiss<CR>", {desc = "Dismiss Noice Message"})
 
--- Open Zoxide telescope extension
-vim.keymap.set("n", "<leader>Z", "<cmd>Zi<CR>", { desc = "Open Zoxide" })
 
 -- Resize with arrows
 vim.keymap.set("n", "<C-S-Down>", ":resize +2<CR>", { desc = "Resize Horizontal Split Down" })
@@ -136,6 +134,11 @@ vim.keymap.set("v", "//", 'y/<C-R>"<CR>', { desc = "Search for highlighted text"
 -- Exit terminal mode shortcut
 vim.keymap.set("t", "<C-t>", "<C-\\><C-n>")
 
+-- nav tree
+vim.keymap.set("n", "<leader>es", "<cmd>Neotree<CR>", { desc = "Toggle NvimTree" })
+vim.keymap.set("n", "<leader>ef", "<cmd>Neotree float<CR>", { desc = "打开浮窗 NvimTree" })
+vim.keymap.set("n", "<leader>ew", "<cmd>Neotree close<CR>", { desc = "关闭 NvimTree" })
+
 -- Autocommands
 vim.api.nvim_create_augroup("custom_buffer", { clear = true })
 
@@ -160,3 +163,4 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   pattern  = "*",
   callback = function() vim.highlight.on_yank { timeout = 200 } end
 })
+

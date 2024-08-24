@@ -1,8 +1,7 @@
 return {
   "nvim-telescope/telescope.nvim",
-  tag = "0.1.4",
   dependencies = {
-    "ThePrimeagen/harpoon",
+    "nvim-treesitter/nvim-treesitter",
     "nvim-lua/plenary.nvim",
     "joshmedeski/telescope-smart-goto.nvim",
   },
@@ -88,12 +87,6 @@ return {
           },
         },
       },
-      pickers = {
-        find_files = {
-          -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
-          find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
-        },
-      },
       extensions = {
         undo = {
           use_delta = true,
@@ -127,6 +120,5 @@ return {
 
     require("telescope").load_extension("colors")
 
-    require("telescope").load_extension("noice")
   end,
 }
