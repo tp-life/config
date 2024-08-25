@@ -72,6 +72,7 @@ return {
         -- `hidden = true` is not supported in text grep commands.
         vimgrep_arguments = vimgrep_arguments,
         path_display = { "truncate" },
+        file_ignore_patterns = {"node_modules", "dist", ".git","_extensions", "_browser_user_data","_fingerprints"},
         mappings = {
           n = {
             ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
