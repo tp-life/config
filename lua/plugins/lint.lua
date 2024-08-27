@@ -27,7 +27,7 @@ return {
           css = { { "prettierd", "prettier", stop_after_first = true } },
           scss = { { "prettierd", "prettier", stop_after_first = true } },
           sh = { "shellcheck" },
-          go = { "gofumt", "goimports-reviser", "golines" },
+          go = { "gofumpt", "goimports-reviser", "golines" },
         },
       })
 
