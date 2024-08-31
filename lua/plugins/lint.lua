@@ -1,5 +1,5 @@
 return {
-    {
+  {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
@@ -27,8 +27,14 @@ return {
           css = { { "prettierd", "prettier", stop_after_first = true } },
           scss = { { "prettierd", "prettier", stop_after_first = true } },
           sh = { "shellcheck" },
-          go = { "gofumpt", "goimports-reviser", "golines" },
+          go = { "goimports", "gofumpt", "goimports-reviser", "golines" },
         },
+        -- Set default options
+        default_format_opts = {
+          lsp_format = "fallback",
+        },
+        -- Set up format-on-save
+        format_on_save = { timeout_ms = 500, lsp_fallback = true },
       })
 
       vim.keymap.set({ "n", "v" }, "<leader>l", function()
@@ -40,7 +46,7 @@ return {
       end, { desc = "Format file or range (in visual mode)" })
     end,
   },
-{
+  {
     "mfussenegger/nvim-lint",
     event = {
       "BufReadPre",
@@ -71,4 +77,4 @@ return {
       end, { desc = "Trigger linting for current file" })
     end,
   },
-  }
+}
