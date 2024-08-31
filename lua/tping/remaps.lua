@@ -1,10 +1,5 @@
 -- Oil
-vim.keymap.set(
-    "n",
-    "-",
-    "<CMD>Oil --float<CR>",
-    { desc = "Open parent directory" }
-)
+vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 
 vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode" })
 
@@ -17,7 +12,9 @@ vim.keymap.set("i", "jj", "<Esc>", { desc = "Esc" })
 
 -- Make Y behave like C or D
 vim.keymap.set("n", "Y", "y$")
-
+-- Comment
+vim.keymap.set("n", "<C-/>", "gcc", { desc = "Toggle Comment", remap = true })
+vim.keymap.set("v", "<C-/>", "gc", { desc = "Toggle comment", remap = true })
 -- Select all
 vim.keymap.set("n", "==", "gg<S-v>G")
 
